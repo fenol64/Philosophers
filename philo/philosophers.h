@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fenol64 <fenol64@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fnascime <fnascime@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:36:33 by fnascime          #+#    #+#             */
-/*   Updated: 2024/02/14 16:52:06 by fenol64          ###   ########.fr       */
+/*   Updated: 2024/02/20 21:03:07 by fnascime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,30 +20,37 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-typedef struct s_philo
-{
-    int id;
-    int is_dead;
-    int is_eating;
-    int is_sleeping;
-    int is_thinking;
-    struct s_philo *next_philo;
-} t_philo;
-
-typedef struct s_fork
-{
-    int id;
-    int is_taken;
-} t_fork;
-
 typedef struct s_table
 {
     int num_philos;
+    pthread_t *philos;
+    pthread_mutex_t *mutexes;
     int time_to_die;
     int time_to_eat;
     int time_to_sleep;
     int philo_must_eat;
 } t_table;
+
+typedef struct s_philo
+{
+    int index;
+    int time_to_die;
+    int time_to_eat;
+    int time_to_sleep;
+    int philo_must_eat;
+    pthread_mutex_t mutex;
+} t_philo;
+
+int create_philos(t_table *table);
+
+// philo operations
+void philo_think();
+void philo_eat();
+void philo_sleep();
+
+// utils
+int ft_atoi(char *str);
+
 
 
 #endif
