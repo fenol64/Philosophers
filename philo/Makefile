@@ -1,6 +1,6 @@
 NAME=philo
 
-SRCS=main.c philo.c ft_atoi.c
+SRCS=main.c philo.c philo_operations.c ft_atoi.c
 OBJS=$(SRCS:.c=.o)
 
 COMPILER= cc -Wall -Wextra -Werror
@@ -12,6 +12,7 @@ COMPILER= cc -Wall -Wextra -Werror
 $(NAME): $(OBJS)
 	@ printf "\ncompile success"
 	@ $(COMPILER) $(OBJS) -o $(NAME)
+	@ make clean
 
 all: $(NAME)
 

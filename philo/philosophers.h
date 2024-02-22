@@ -6,7 +6,7 @@
 /*   By: fnascime <fnascime@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:36:33 by fnascime          #+#    #+#             */
-/*   Updated: 2024/02/20 21:03:07 by fnascime         ###   ########.fr       */
+/*   Updated: 2024/02/21 14:14:38 by fnascime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ typedef struct s_philo
 int create_philos(t_table *table);
 
 // philo operations
-void philo_think();
-void philo_eat();
-void philo_sleep();
+void philo_think(int philo_index);
+void philo_eat(int philo_index, int time_to_eat);
+void philo_sleep(int philo_index, int time_to_sleep);
 
 // utils
 int ft_atoi(char *str);
