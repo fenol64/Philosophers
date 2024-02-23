@@ -6,7 +6,7 @@
 /*   By: fnascime <fnascime@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:36:33 by fnascime          #+#    #+#             */
-/*   Updated: 2024/02/21 14:14:38 by fnascime         ###   ########.fr       */
+/*   Updated: 2024/02/22 21:42:31 by fnascime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,37 +19,43 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <stdint.h>
 
 typedef struct s_table
 {
+    long long    start_time;
     int num_philos;
-    pthread_t *philos;
-    pthread_mutex_t *mutexes;
     int time_to_die;
     int time_to_eat;
     int time_to_sleep;
     int philo_must_eat;
+    pthread_t *philos;
+    pthread_mutex_t *forks;
 } t_table;
 
 typedef struct s_philo
 {
     int index;
+    long long    start_time;
     int time_to_die;
     int time_to_eat;
     int time_to_sleep;
     int philo_must_eat;
-    pthread_mutex_t mutex;
+    pthread_mutex_t fork;
+    pthread_mutex_t *forks;
 } t_philo;
 
 int create_philos(t_table *table);
 
 // philo operations
-void philo_think(int philo_index);
-void philo_eat(int philo_index, int time_to_eat);
-void philo_sleep(int philo_index, int time_to_sleep);
+void philo_think(int philo_index, long long start);
+void philo_eat(int philo_index, int time_to_eat, long long start);
+void philo_sleep(int philo_index, int time_to_sleep, long long start);
 
 // utils
+long long get_current_time();
 int ft_atoi(char *str);
+void mspleep(long long time);
 
 
 

@@ -1,6 +1,6 @@
 NAME=philo
 
-SRCS=main.c philo.c philo_operations.c ft_atoi.c
+SRCS=main.c philo.c philo_operations.c utils.c
 OBJS=$(SRCS:.c=.o)
 
 COMPILER= cc -Wall -Wextra -Werror
