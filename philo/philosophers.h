@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fnascime <fnascime@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fnascime <fnascime@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:36:33 by fnascime          #+#    #+#             */
-/*   Updated: 2024/02/22 21:42:31 by fnascime         ###   ########.fr       */
+/*   Updated: 2024/02/23 16:49:24 by fnascime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ typedef struct s_philo
     int time_to_eat;
     int time_to_sleep;
     int philo_must_eat;
-    pthread_mutex_t fork;
     pthread_mutex_t *forks;
 } t_philo;
 
@@ -51,6 +50,7 @@ int create_philos(t_table *table);
 void philo_think(int philo_index, long long start);
 void philo_eat(int philo_index, int time_to_eat, long long start);
 void philo_sleep(int philo_index, int time_to_sleep, long long start);
+void    is_dead(int philo_index, long long start, int time_to_die);
 
 // utils
 long long get_current_time();

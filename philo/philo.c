@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fnascime <fnascime@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fnascime <fnascime@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 12:57:35 by fnascime          #+#    #+#             */
-/*   Updated: 2024/02/22 21:46:10 by fnascime         ###   ########.fr       */
+/*   Updated: 2024/02/23 16:51:20 by fnascime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void*   philo_day(void *arg)
         loop = 0;
     while(philo_data->philo_must_eat != 0 || loop)
     {
+        is_dead(philo_data->index, philo_data->start_time, philo_data->time_to_die);
         philo_think(philo_data->index, philo_data->start_time);
         philo_eat(philo_data->index, philo_data->time_to_eat, philo_data->start_time);
         philo_sleep(philo_data->index, philo_data->time_to_sleep, philo_data->start_time);
@@ -42,7 +43,6 @@ int create_philo(int index, pthread_t *philo, t_table *table)
     philo_data->time_to_die = table->time_to_die;
     philo_data->time_to_eat = table->time_to_eat;
     philo_data->time_to_sleep = table->time_to_sleep;
-    philo_data->fork = table->forks[index];
     philo_data->forks = table->forks;
 
     if (table->philo_must_eat)
