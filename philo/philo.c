@@ -6,49 +6,37 @@
 /*   By: fnascime <fnascime@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 12:57:35 by fnascime          #+#    #+#             */
-/*   Updated: 2024/02/23 16:51:20 by fnascime         ###   ########.fr       */
+/*   Updated: 2024/02/28 19:42:21 by fnascime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
+
 void*   philo_day(void *arg)
 {
     t_philo *philo_data;
-    int loop;
 
     philo_data = (t_philo *) arg;
-    loop = 1;
-    if (philo_data->philo_must_eat != 0)
-        loop = 0;
-    while(philo_data->philo_must_eat != 0 || loop)
+
+    while(!philo_data->table->finished)
     {
-        is_dead(philo_data->index, philo_data->start_time, philo_data->time_to_die);
-        philo_think(philo_data->index, philo_data->start_time);
-        philo_eat(philo_data->index, philo_data->time_to_eat, philo_data->start_time);
-        philo_sleep(philo_data->index, philo_data->time_to_sleep, philo_data->start_time);
-        if (philo_data->philo_must_eat > 0 && loop != 1)
-            philo_data->philo_must_eat--;
+        philo_eat(philo_data);
+        philo_think(philo_data);
+        philo_sleep(philo_data);   
     }
+    philo_data->table->finished = 1;
     return NULL;
 }
 
-int create_philo(int index, pthread_t *philo, t_table *table)
+int create_philo(int index, t_philo *philo, t_table *table)
 {
-    t_philo *philo_data;
+    philo->index = index;
+    philo->last_time_eat = table->start_time;
+    philo->table = table;
+    philo->eat_count = 0;
 
-    philo_data = malloc(sizeof(*philo_data));
-    philo_data->index = index;
-    philo_data->start_time = table->start_time;
-    philo_data->time_to_die = table->time_to_die;
-    philo_data->time_to_eat = table->time_to_eat;
-    philo_data->time_to_sleep = table->time_to_sleep;
-    philo_data->forks = table->forks;
-
-    if (table->philo_must_eat)
-        philo_data->philo_must_eat = table->philo_must_eat;
-
-    if (pthread_create(philo, NULL, &philo_day, philo_data) != 0)
+    if (pthread_create(&philo->thread, NULL, &philo_day, philo) != 0)
         return 0;
     return 1;
 }
@@ -57,8 +45,9 @@ int create_philos(t_table *table)
 {
     int i;
 
-   table->philos = (pthread_t *) malloc(table->num_philos * sizeof(pthread_t));
+   table->philos = (t_philo *) malloc(table->num_philos * sizeof(t_philo));
    table->forks = (pthread_mutex_t *) malloc(table->num_philos * sizeof(pthread_mutex_t));
+   table->gate = (pthread_mutex_t) PTHREAD_MUTEX_INITIALIZER;
     i = -1;
     while (++i < table->num_philos)
     {
@@ -66,12 +55,12 @@ int create_philos(t_table *table)
             return (0);
     }
     i = -1;
+    create_vigilant(table);
     while (++i < table->num_philos)
     {
-        if (pthread_join(table->philos[i], NULL) != 0)
+        if (pthread_join(table->philos[i].thread, NULL) != 0)
             return (0);
     }
-   free(table->philos);
     return (1);
 }
 

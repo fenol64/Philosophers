@@ -7,7 +7,7 @@ COMPILER= cc -Wall -Wextra -Werror
 
 .c.o:
 	@ $(COMPILER) -c $< -o $(<:.c=.o)
-	@ printf "compiling $< \r"
+	@ printf "compiling $<                                \r"
 
 $(NAME): $(OBJS)
 	@ printf "\ncompile success"
