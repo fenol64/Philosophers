@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fnascime <fnascime@student.42.rio>         +#+  +:+       +#+        */
+/*   By: fenol64 <fenol64@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 18:12:46 by fnascime          #+#    #+#             */
-/*   Updated: 2024/02/29 18:16:36 by fnascime         ###   ########.fr       */
+/*   Updated: 2024/03/03 03:43:24 by fenol64          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,7 @@ int	main(int c, char **v)
 	if (v[5])
 		table.philo_must_eat = ft_atoi(v[5]);
 	create_philos(&table);
+	free(table.philos);
+	free_forks(table.forks, table.num_philos);
+	return (0);
 }
