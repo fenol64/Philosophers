@@ -30,12 +30,13 @@ re: fclean $(NAME)
 #ARG					=	1 800 200 200   # The philosopher should not eat and should die
 #ARG					=	5 410 200 100 7 # One philosopher should die.
 #ARG					=	5 120 80 80 	# Moana tolds all will die
+#ARG					=	2 200 50 50 1
 
 test: re
 	@ ./$(NAME) $(ARG)
 
 valgrind:				re
-						valgrind --leak-check=full --show-leak-kinds=all -s -v --track-origins=yes ./$(NAME) $(ARG)
+						valgrind --leak-check=full --show-leak-kinds=all -s --track-origins=yes ./$(NAME) $(ARG)
 
 helgrind:				re
 						valgrind --tool=helgrind ./$(NAME) $(ARG)

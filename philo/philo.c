@@ -6,7 +6,7 @@
 /*   By: fenol64 <fenol64@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 12:57:35 by fnascime          #+#    #+#             */
-/*   Updated: 2024/03/03 04:09:57 by fenol64          ###   ########.fr       */
+/*   Updated: 2024/03/03 04:31:45 by fenol64          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,9 @@ int	create_philos(t_table *table)
 	table->forks = (pthread_mutex_t *)malloc(table->num_philos
 			* sizeof(pthread_mutex_t));
 	table->gate = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
+	i = -1;
+	while (++i < table->num_philos)
+		pthread_mutex_init(&table->forks[i], NULL);
 	i = -1;
 	while (++i < table->num_philos)
 	{
