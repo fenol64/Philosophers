@@ -6,20 +6,11 @@
 /*   By: fenol64 <fenol64@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 12:57:35 by fnascime          #+#    #+#             */
-/*   Updated: 2024/03/03 04:31:45 by fenol64          ###   ########.fr       */
+/*   Updated: 2024/03/03 04:51:11 by fenol64          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-
-int	check_eat_count(t_philo *philo)
-{
-	if (philo->table->philo_must_eat <= 0)
-		return (1);
-	if (philo->eat_count >= philo->table->philo_must_eat)
-		return (0);
-	return (1);
-}
 
 void	*philo_day(void *arg)
 {

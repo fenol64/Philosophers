@@ -6,7 +6,7 @@
 /*   By: fenol64 <fenol64@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 02:02:17 by fenol64           #+#    #+#             */
-/*   Updated: 2024/03/03 03:42:12 by fenol64          ###   ########.fr       */
+/*   Updated: 2024/03/03 04:50:26 by fenol64          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ time_t					get_formatted_time(time_t start_time);
 void					mspleep(time_t time);
 
 // utils
+int						check_eat_count(t_philo *philo);
 int						ft_atoi(char *str);
 
 #endif
