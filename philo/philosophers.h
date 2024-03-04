@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fenol64 <fenol64@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fnascime <fnascime@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/03 02:02:17 by fenol64           #+#    #+#             */
-/*   Updated: 2024/03/03 04:50:26 by fenol64          ###   ########.fr       */
+/*   Created: 2024/03/03 02:02:17 by fnascime          #+#    #+#             */
+/*   Updated: 2024/03/04 18:38:34 by fnascime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILOSOFERS_H
-# define PHILOSOFERS_H
+#ifndef PHILOSOPHERS_H
+# define PHILOSOPHERS_H
 
 # include <pthread.h>
 # include <stdint.h>
@@ -59,6 +59,9 @@ void					create_vigilant(t_table *table);
 // philo forks
 int						get_first_fork(t_philo *philo);
 int						get_second_fork(t_philo *philo);
+int						get_forks(t_philo *philo, int *forks_pointer);
+int						release_forks(int first_fork, int second_fork,
+							t_philo *philo);
 void					free_forks(pthread_mutex_t *forks, int num_philos);
 
 // time utils

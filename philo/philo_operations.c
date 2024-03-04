@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_operations.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fenol64 <fenol64@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fnascime <fnascime@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 19:01:25 by fnascime          #+#    #+#             */
-/*   Updated: 2024/03/03 03:00:10 by fenol64          ###   ########.fr       */
+/*   Updated: 2024/03/04 19:11:46 by fnascime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,47 +14,50 @@
 
 int	philo_think(t_philo *philo)
 {
+	int	table_finish;
+
+	table_finish = 0;
 	pthread_mutex_lock(&philo->table->gate);
 	if (!philo->table->finished)
 		printf("%ld %d is thinking\n",
 			get_formatted_time(philo->table->start_time), philo->index + 1);
+	table_finish = philo->table->finished;
 	pthread_mutex_unlock(&philo->table->gate);
-	return (philo->table->finished);
+	return (table_finish);
 }
 
 int	philo_eat(t_philo *philo)
 {
-	int	first_fork;
-	int	second_fork;
+	int	table_finish;
+	int	forks[2];
 
-	first_fork = get_first_fork(philo);
-	if (philo->table->num_philos == 1)
-	{
-		mspleep(philo->table->time_to_die);
-		pthread_mutex_unlock(&philo->table->forks[first_fork]);
-		return (1);
-	}
-	second_fork = get_second_fork(philo);
+	table_finish = 0;
+	if (!get_forks(philo, forks))
+		return (table_finish);
 	pthread_mutex_lock(&philo->table->gate);
 	philo->last_time_eat = get_current_time();
 	if (!philo->table->finished)
 		printf("%ld %d is eating\n",
 			get_formatted_time(philo->table->start_time), philo->index + 1);
+	philo->eat_count++;
+	table_finish = philo->table->finished;
 	pthread_mutex_unlock(&philo->table->gate);
 	mspleep(philo->table->time_to_eat);
-	philo->eat_count++;
-	pthread_mutex_unlock(&philo->table->forks[first_fork]);
-	pthread_mutex_unlock(&philo->table->forks[second_fork]);
-	return (philo->table->finished);
+	release_forks(forks[0], forks[1], philo);
+	return (table_finish);
 }
 
 int	philo_sleep(t_philo *philo)
 {
+	int	table_finish;
+
+	table_finish = 0;
 	pthread_mutex_lock(&philo->table->gate);
 	if (!philo->table->finished)
 		printf("%ld %d is sleeping\n",
 			get_formatted_time(philo->table->start_time), philo->index + 1);
+	table_finish = philo->table->finished;
 	pthread_mutex_unlock(&philo->table->gate);
 	mspleep(philo->table->time_to_sleep);
-	return (philo->table->finished);
+	return (table_finish);
 }

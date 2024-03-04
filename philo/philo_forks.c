@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_forks.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fenol64 <fenol64@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fnascime <fnascime@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 02:25:11 by fenol64           #+#    #+#             */
-/*   Updated: 2024/03/03 03:43:07 by fenol64          ###   ########.fr       */
+/*   Updated: 2024/03/04 19:12:35 by fnascime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,44 @@ int	get_second_fork(t_philo *philo)
 	return (second_fork);
 }
 
+int	get_forks(t_philo *philo, int *forks_pointer)
+{
+	if (philo->table->num_philos == 1)
+	{
+		mspleep(philo->table->time_to_die);
+		return (0);
+	}
+	if ((philo->index + 1) == philo->table->num_philos)
+	{
+		forks_pointer[0] = get_second_fork(philo);
+		forks_pointer[1] = get_first_fork(philo);
+	}
+	else
+	{
+		forks_pointer[0] = get_first_fork(philo);
+		forks_pointer[1] = get_second_fork(philo);
+	}
+	return (1);
+}
+
+int	release_forks(int first_fork, int second_fork, t_philo *philo)
+{
+	if ((philo->index + 1) == philo->table->num_philos)
+	{
+		pthread_mutex_unlock(&philo->table->forks[second_fork]);
+		pthread_mutex_unlock(&philo->table->forks[first_fork]);
+	}
+	else
+	{
+		pthread_mutex_unlock(&philo->table->forks[first_fork]);
+		pthread_mutex_unlock(&philo->table->forks[second_fork]);
+	}
+	return (1);
+}
+
 void	free_forks(pthread_mutex_t *forks, int num_philos)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < num_philos)

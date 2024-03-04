@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fenol64 <fenol64@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fnascime <fnascime@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 16:42:08 by fnascime          #+#    #+#             */
-/*   Updated: 2024/03/03 04:51:08 by fenol64          ###   ########.fr       */
+/*   Updated: 2024/03/04 18:35:41 by fnascime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,18 @@
 
 int	check_eat_count(t_philo *philo)
 {
+	pthread_mutex_lock(&philo->table->gate);
 	if (philo->table->philo_must_eat <= 0)
+	{
+		pthread_mutex_unlock(&philo->table->gate);
 		return (1);
+	}
 	if (philo->eat_count >= philo->table->philo_must_eat)
+	{
+		pthread_mutex_unlock(&philo->table->gate);
 		return (0);
+	}
+	pthread_mutex_unlock(&philo->table->gate);
 	return (1);
 }
 
@@ -30,13 +38,29 @@ int	check_philos_eat_count(t_philo *philos)
 	i = 0;
 	while (i < philos->table->num_philos)
 	{
+		pthread_mutex_lock(&philos[i].table->gate);
 		if (philos[i].eat_count >= philos[i].table->philo_must_eat)
 		{
 			ret++;
 			if (ret >= philos[i].table->num_philos)
+			{
+				pthread_mutex_unlock(&philos[i].table->gate);
 				return (1);
+			}
 		}
+		pthread_mutex_unlock(&philos[i].table->gate);
 		i++;
+	}
+	return (0);
+}
+
+int	check_if_all_ate(t_table *table)
+{
+	if (table->philo_must_eat > 0 && check_philos_eat_count(table->philos))
+	{
+		pthread_mutex_lock(&table->gate);
+		table->finished = 1;
+		return (1);
 	}
 	return (0);
 }
@@ -50,11 +74,9 @@ void	*vigilant_day(void *arg)
 	i = 0;
 	while (1)
 	{
-		if (table->philo_must_eat > 0 && check_philos_eat_count(table->philos))
-		{
-			table->finished = 1;
+		if (check_if_all_ate(table))
 			break ;
-		}
+		pthread_mutex_lock(&table->gate);
 		if (get_current_time()
 			- table->philos[i].last_time_eat > table->time_to_die)
 		{
@@ -65,19 +87,17 @@ void	*vigilant_day(void *arg)
 			break ;
 		}
 		i = (i + 1) % table->num_philos;
-		usleep(1000);
+		pthread_mutex_unlock(&table->gate);
+		usleep(2000);
 	}
+	pthread_mutex_unlock(&table->gate);
 	return (NULL);
 }
 
 void	create_vigilant(t_table *table)
 {
 	if (pthread_create(&table->vigilant, NULL, &vigilant_day, table) != 0)
-	{
 		printf("Error: pthread_create\n");
-	}
 	if (pthread_join(table->vigilant, NULL) != 0)
-	{
 		printf("Error: pthread_join\n");
-	}
 }

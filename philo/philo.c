@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fenol64 <fenol64@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fnascime <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/20 12:57:35 by fnascime          #+#    #+#             */
-/*   Updated: 2024/03/03 04:51:11 by fenol64          ###   ########.fr       */
+/*   Created: 2024/03/04 19:14:25 by fnascime          #+#    #+#             */
+/*   Updated: 2024/03/04 19:14:26 by fnascime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,17 @@
 void	*philo_day(void *arg)
 {
 	t_philo	*philo_data;
+	int		table_finish;
 
 	philo_data = (t_philo *)arg;
+	pthread_mutex_lock(&philo_data->table->gate);
+	table_finish = philo_data->table->finished;
+	pthread_mutex_unlock(&philo_data->table->gate);
 	if (philo_data->index % 2)
 		usleep(1000);
 	while (1)
 	{
-		if (philo_data->table->finished)
+		if (table_finish)
 			break ;
 		if (philo_think(philo_data))
 			break ;
