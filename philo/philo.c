@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fnascime <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: fnascime <fnascime@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 19:14:25 by fnascime          #+#    #+#             */
-/*   Updated: 2024/03/04 19:14:26 by fnascime         ###   ########.fr       */
+/*   Updated: 2024/03/04 20:56:48 by fnascime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	*philo_day(void *arg)
 			break ;
 		if (philo_think(philo_data))
 			break ;
-		if (check_eat_count(philo_data) && philo_eat(philo_data))
+		if (philo_eat(philo_data) && check_eat_count(philo_data))
 			break ;
 		if (philo_sleep(philo_data))
 			break ;
