@@ -6,7 +6,7 @@
 /*   By: fnascime <fnascime@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 16:42:08 by fnascime          #+#    #+#             */
-/*   Updated: 2024/03/04 21:07:05 by fnascime         ###   ########.fr       */
+/*   Updated: 2024/03/04 21:12:32 by fnascime         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ void	*vigilant_day(void *arg)
 		pthread_mutex_unlock(&table->gate);
 	}
 	pthread_mutex_unlock(&table->gate);
+	usleep(1000);
 	return (NULL);
 }
 
