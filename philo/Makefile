@@ -31,7 +31,7 @@ re: fclean $(NAME)
 #ARG					=	5 800 200 200 7 # No philosopher should die.
 #ARG					=	4 410 200 200   # No philosopher should die.
 #ARG					=	4 310 200 100 7 # One philosopher should die.
-#ARG					=	4 400 200 200 # One philosopher should die.
+#ARG					=	4 400 200 200 # No philosopher should die.
 
 #ARG					=	5 410 200 100 7 # One philosopher should die.
 #ARG					=	5 120 80 80 	# Moana tolds all will die
